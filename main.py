@@ -11,8 +11,6 @@ class MainWindow(CTk):
 
         self.geometry('800x600')
         self.title('LogiTalk')
-
-        # CTkOptionMenu, CTkButton (2 штуки), CTkScrollableFrame, CtkEntry
         self.btn_send = CTkButton(self, width=50, height=40, text='✈', command=self.send_message)
 
         self.btn_open = CTkButton(self, width=50, height=40, text='📁')
@@ -82,7 +80,7 @@ class MainWindow(CTk):
         message = self.message_entry.get()
         if message and message != '':
             self.add_message(message)
-            data = f'TEXT@{self.name}@{message}\n'  # TEXT@Dmytro@Привіт\n
+            data = f'TEXT@{self.name}@{message}\n'
             try:
                 self.socket.sendall(data.encode())
             except:
@@ -105,8 +103,8 @@ class MainWindow(CTk):
     def handle_line(self, line):
         if not line:
             return
-        parts = line.split('@', 3)  # TEXT@Dmytro@Привіт -> ['TEXT','Dmytro','Привіт']
-        ms_type = parts[0]  # тип повідомлення 'TEXT'
+        parts = line.split('@', 3)
+        ms_type = parts[0]
         if ms_type == 'TEXT':
             if len(parts) >= 3:
                 self.add_message(f'{parts[1]}: {parts[2]}', sender=1)
